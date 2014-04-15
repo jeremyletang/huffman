@@ -5,14 +5,14 @@
 (* Compresseur de données en utilisant l'arbre de HUFFMAN          *)
 (*******************************************************************)
 
-(*******************************************************************) 
+(*******************************************************************)
 (* Signature du compresseur de données                             *)
-(* en utilisant l'arbre de HUFFMAN                                 *) 
-(*******************************************************************) 
+(* en utilisant l'arbre de HUFFMAN                                 *)
+(*******************************************************************)
 
-module type HUFFMAN = 
+module type HUFFMAN =
 sig
-  
+
   (* Structure de données permettant de définir un arbre *)
 
   type arbre = Vide | Feuille of char | Noeud of arbre * arbre
@@ -22,7 +22,7 @@ sig
 
   class huffman : ?str:string -> unit ->
   object
-    val mutable a : arbre 
+    val mutable a : arbre
 
     method creerArbre : (char * int) list -> unit
 
@@ -39,7 +39,7 @@ sig
     method appartient : char -> bool
 
     method cheminFeuille : char -> bin list
-    
+
     method extraireFeuille : bin list -> char
 
     method map : (char -> char) -> unit
@@ -56,12 +56,12 @@ sig
 
   class zip: ?str:string -> unit ->
   object
- 
+
     inherit huffman
 
     method extraireInfos : char list -> int * char list * char list
 
-    method fromStruct : char list -> char list * int 
+    method fromStruct : char list -> char list * int
 
     method toInt : bin list -> int
 
@@ -80,5 +80,5 @@ sig
     method decoderFichier : string -> string -> unit
 
   end
-  
+
 end;;

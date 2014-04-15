@@ -9,7 +9,7 @@
 
 print_string  "*************************  DEBUT TESTS  **************************\n\n";;
 
-(* On charge le fichier ml du Tp après avoir implanté 
+(* On charge le fichier ml du Tp après avoir implanté
 les fonctions demandées pour realiser les tests  *)
 
 print_string "Chargement du fichier ml du TP\n";;
@@ -26,8 +26,8 @@ open Utiles;;
 print_string "\n\nTest de la fonction nPartition\n";
 print_string "------------------------------\n\n";
 
-nPartition 1 [];;  
-nPartition 0 ['1';'2';'3';'4'];;   
+nPartition 1 [];;
+nPartition 0 ['1';'2';'3';'4'];;
 nPartition 1 ['1';'2';'3';'4'];;
 nPartition 2 ['1';'2';'3';'4'];;
 nPartition 4 ['1';'2';'3';'4'];;
@@ -89,7 +89,7 @@ let z = new zip ();;
 z#coderFichier "testzip.ml" "test.zz";;
 z#decoderFichier "test.zz" "testzip2.ml";;
 
-(* On devrait constater que «testzip2.ml» est identique à testzip.ml»*)
+(* On devrait constater que «testzip2.ml» est identique à testzip.ml» *)
 compFichier "testzip.ml" "testzip2.ml";;
 
 print_string "*************************   FIN TESTS   **************************\n";;
@@ -251,5 +251,5 @@ Ratio de compression: 34%
 ******************************************************************
 
 - : unit = ()
-# 
+#
 *)
