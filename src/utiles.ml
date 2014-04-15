@@ -99,6 +99,6 @@ struct
   (* dernière liste de cette liste peut faire exception à cette règle.*)
 
 (******)
-  let rec nPartition (n:int) (l:'a list) =
+  (* let rec nPartition (n:int) (l:'a list) = *)                                                    
 
 end;;

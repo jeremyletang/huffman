@@ -24,33 +24,33 @@ sig
   object
     val mutable a : arbre
 
-    method creerArbre : (char * int) list -> unit
+    (* method creerArbre : (char * int) list -> unit *)                                             
 
-    method fromString : string -> unit
+    (* method fromString : string -> unit *)
 
-    method toList : char list
+    (* method toList : char list *)                                                                 
 
-    method toString : string
+    (* method toString : string *)                                                                  
 
-    method toStruct : string
+    (* method toStruct : string *)                                                                  
 
     method estVide : bool
 
-    method appartient : char -> bool
+    (* method appartient : char -> bool *)                                                          
 
-    method cheminFeuille : char -> bin list
+    (* method cheminFeuille : char -> bin list *)                                                   
 
-    method extraireFeuille : bin list -> char
+    (* method extraireFeuille : bin list -> char *)                                                 
 
-    method map : (char -> char) -> unit
+    (* method map : (char -> char) -> unit *)                                                       
 
-    method subs : (char * char) list -> unit
+    (* method subs : (char * char) list -> unit *)
 
-    method coder : string -> bin list
+    (* method coder : string -> bin list *)
 
-    method decoder : bin list -> string
+    (* method decoder : bin list -> string *)                                                       
 
-    method afficherArbre : string -> unit
+    (* method afficherArbre : string -> unit *)                                                     
 
   end
 
@@ -67,17 +67,17 @@ sig
 
     method toBin : int -> int -> bin list
 
-    method coderBin : int -> bin list -> char list * int
+    (* method coderBin : int -> bin list -> char list * int *)
 
     method decoderBin : int -> char list * int -> bin list
 
-    method coderStr : string -> string
+    (* method coderStr : string -> string *)
 
-    method decoderStr : string -> string
+    (* method decoderStr : string -> string *)
 
-    method coderFichier : string -> string -> unit
+    (* method coderFichier : string -> string -> unit *)
 
-    method decoderFichier : string -> string -> unit
+    (* method decoderFichier : string -> string -> unit *)
 
   end
 

@@ -5,7 +5,7 @@
 (* Compresseur de données en utilisant l'arbre de HUFFMAN          *)
 (*******************************************************************)
 (* Étudiant(e):                                                    *)
-(* NOM: Vogeli                  PRÉNOM: Vogeli                     *)
+(* NOM: Vogeli                  PRÉNOM: Raphaël                    *)
 (* MATRICULE: 111 083 727       PROGRAMME: GLO                     *)
 (*                                                                 *)
 (*******************************************************************)
@@ -47,13 +47,13 @@ struct
       | _ -> false
 
 (******)
-    (*  method creerArbre : (char * int) list -> unit *)
+     (* method creerArbre : (char * int) list -> unit *)
     (* La variable d'instance "a" est mis à jour en conséquence *)
     (* La méthode ne prend pas pour aquis que lf est triée *)
-    method creerArbre (lf:(char * int) list) =
+    (* method creerArbre (lf:(char * int) list) = *)
 
     (* method fromString : string -> unit *)
-    method fromString (s:string) =
+    (* method fromString (s:string) =
       let rec fromStringAux = function
   | '<'::r ->
       let ag,r1 = fromStringAux' r in
@@ -77,59 +77,60 @@ struct
        | l ->  ( match fromStringAux l with
        | a',[] -> a'
        | _,_ -> failwith "Probleme dans la chaine"
-         )
+         ) *)
 (******)
     (* method toList : char list *)
-    method toList =
+    (* method toList = *)
 
 (******)
     (* method toString : string *)
-    method toString =
+    (* method toString = *)
 
 (******)
     (* method toStruct : string *)
-    method toStruct =
+    (* method toStruct = *)
 
 (******)
     (* method appartient : char -> bool *)
-    method appartient (c:char) =
+    (* method appartient (c:char) = *)
 
 (******)
     (* method cheminFeuille : char -> bin list *)
-    method cheminFeuille (c:char) =
+    (* method cheminFeuille (c:char) = *)
 
 (******)
     (* method extraireFeuille : bin list -> char  *)
-    method extraireFeuille (l_bin:bin list) =
+    (* method extraireFeuille (l_bin:bin list) = *)
 
 (******)
     (* method map : (char -> char) -> unit *)
     (* La variable d'instance "a" est mis à jour en conséquence *)
-    method map (f:(char -> char)) =
+    (* method map (f:(char -> char)) = *)
 
     (* method subs : (char * char) list -> unit *)
-    method subs (l:(char * char) list) =
-      this#map (fun c -> try List.assoc c l with Not_found -> c)
+   (*  method subs (l:(char * char) list) =
+      this#map (fun c -> try List.assoc c l with Not_found -> c) *)
 
     (* method coder : string -> bin list *)
-    method coder (s:string) =
+   (*  method coder (s:string) =
       if a = Vide
       then
   this#creerArbre (listeFreq (explode s));
-      List.fold_left (fun res c -> res@(this#cheminFeuille c)) [] (explode s)
+      List.fold_left (fun res c -> res@(this#cheminFeuille c)) [] (explode s) *)
 
 (******)
     (*method decoder : bin list -> string *)
-    method decoder (l_bin:bin list) =
+    (* method decoder (l_bin:bin list) = *)
 
 (******)
      (* afficherArbre : arbre -> string -> unit *)
-     method afficherArbre (file:string) =
+     (* method afficherArbre (file:string) = *)
 
     initializer
         match str with
-    | None -> ()
-          | Some str -> this#creerArbre (listeFreq (explode str))
+        | None -> ()
+        | Some str -> print_string str
+        (* | Some str -> this#creerArbre (listeFreq (explode str)) *)
   end
 
 
@@ -223,13 +224,13 @@ struct
         if i' < 0 then l else fillHd Z i' l
 
     (* coderBin : int -> bin list -> char list * int *)
-    method coderBin (n:int) (l_bin:bin list) =
+(*     method coderBin (n:int) (l_bin:bin list) =
       match l_bin with
         | [] -> [],0
         | _ ->
     let l = nPartition n l_bin in
       List.map (fun l' -> char_of_int (this#toInt l')) l,
-      List.length (List.hd (List.rev l))
+      List.length (List.hd (List.rev l)) *)
 
     (* decoderBin : int -> char list * int -> bin list *)
     method decoderBin (n':int) ((l_c,n):char list * int) =
@@ -243,28 +244,28 @@ struct
       List.concat l'
 
     (* coderStr : string -> string *)
-    method coderStr (s:string) =
+(*     method coderStr (s:string) =
       let l_bin = this#coder s in
       let lc,n = this#coderBin nb l_bin in
       let sa = this#toStruct in
       let sa' = List.fold_left (fun acc c -> acc ^ (String.make 1 c)) "" (this#toList) in
-  (string_of_int n) ^ sa ^ sa' ^ (implode lc)
+  (string_of_int n) ^ sa ^ sa' ^ (implode lc) *)
 
 (******)
     (* decoderStr : string -> string *)
-    method decoderStr (s:string) =
+    (* method decoderStr (s:string) = *)                                                            
 
 (******)
     (* coderFichier : string -> string -> unit *)
-    method coderFichier (inFile:string) (outFile:string) =
+   (*  method coderFichier (inFile:string) (outFile:string) =                                       
       let ratio s1 s2 =
   int_of_float ((1.0 -. ((float_of_int (String.length s1)) /.
       (float_of_int (String.length s2)))) *. 100.0)
-      in ...
+      in ... *)
 
 (******)
     (*  decoderFichier : string -> string -> unit *)
-    method decoderFichier (inFile:string) (outFile:string) =
+    (* method decoderFichier (inFile:string) (outFile:string) = *)                                  
 
 
   end
