@@ -154,42 +154,42 @@ struct
 
 (******)
     (* method cheminFeuille : char -> bin list *)
-      method cheminFeuille (c:char) = 
+      method cheminFeuille (c:char) =
         let rec parcoursArbre arb l_bin  = match arb with
         Noeud(Feuille(f),n) ->if f == c then l_bin@[Z] else parcoursArbre n (l_bin@[U])
         | Noeud(n,Feuille(f)) ->if f == c then l_bin@[U] else parcoursArbre n (l_bin@[Z])
         | Feuille(f) -> if f == c then l_bin else begin print_string "Caractere introuvable dans l'arbre"; [] end
-        |  _ -> l_bin 
+        |  _ -> l_bin
       in
       if this#estVide then begin print_string "L'arbre est vide"; [] end
       else parcoursArbre a []
 
 (******)
     (* method extraireFeuille : bin list -> char  *)
-     method extraireFeuille (l_bin:bin list) = 
+     method extraireFeuille (l_bin:bin list) =
      let rec parcoursArbre arb l_bin iter =
         if iter > (List.length l_bin) - 1 then begin print_string "Chemin binaire mauvais"; ' ' end
         else
          match (List.nth l_bin iter) with
-          Z -> (match arb with Noeud(Feuille(f), Feuille(f2)) -> 
-                  if iter == (List.length l_bin - 1) then f 
-                  else begin print_string "Feuille introuvable dans l'arbre"; ' ' end 
-                |Noeud(Feuille(f), n) ->
-                  if iter == (List.length l_bin - 1) then f 
+          Z -> (match arb with Noeud(Feuille(f), Feuille(f2)) ->
+                  if iter == (List.length l_bin - 1) then f
                   else begin print_string "Feuille introuvable dans l'arbre"; ' ' end
-                |Noeud(n, Feuille(f)) -> parcoursArbre n l_bin (iter + 1) 
-                | _ -> ' ')     
-          | U -> (match arb with Noeud(Feuille(f), Feuille(f2)) -> 
-                    if iter == (List.length l_bin - 1) then f2 
+                |Noeud(Feuille(f), n) ->
+                  if iter == (List.length l_bin - 1) then f
+                  else begin print_string "Feuille introuvable dans l'arbre"; ' ' end
+                |Noeud(n, Feuille(f)) -> parcoursArbre n l_bin (iter + 1)
+                | _ -> ' ')
+          | U -> (match arb with Noeud(Feuille(f), Feuille(f2)) ->
+                    if iter == (List.length l_bin - 1) then f2
                     else  begin print_string "Feuille introuvable dans l'arbre"; ' ' end
-                  | Noeud(Feuille(f), n) -> parcoursArbre n l_bin (iter + 1) 
+                  | Noeud(Feuille(f), n) -> parcoursArbre n l_bin (iter + 1)
                   | Noeud( n, Feuille(f)) ->
-                      if iter == (List.length l_bin - 1) then f 
-                      else begin print_string "Feuille introuvable dans l'arbre"; ' ' end 
+                      if iter == (List.length l_bin - 1) then f
+                      else begin print_string "Feuille introuvable dans l'arbre"; ' ' end
                   |_ -> ' ' )
      in
-    
-    parcoursArbre a l_bin 0 
+
+    parcoursArbre a l_bin 0
 
     (* method map : (char -> char) -> unit *)
     (* La variable d'instance "a" est mis à jour en conséquence *)

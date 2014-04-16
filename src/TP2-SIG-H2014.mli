@@ -41,8 +41,8 @@ sig
     method appartient : char -> bool
 
     method cheminFeuille : char -> bin list
-    
-    method extraireFeuille : bin list -> char                                                 
+
+    method extraireFeuille : bin list -> char
 
     method map : (char -> char) -> unit
 
@@ -50,7 +50,7 @@ sig
 
     (* method coder : string -> bin list *)
 
-    (* method decoder : bin list -> string *)                                                       
+    (* method decoder : bin list -> string *)
 
     method afficherArbre : string -> unit
 
