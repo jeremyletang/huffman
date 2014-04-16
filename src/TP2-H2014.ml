@@ -76,31 +76,31 @@ struct
       | _ -> rec_build_arbre (tri less_than lfeuille)
 
     (* method fromString : string -> unit *)
-    (* method fromString (s:string) =
+    method fromString (s:string) =
       let rec fromStringAux = function
-  | '<'::r ->
-      let ag,r1 = fromStringAux' r in
-        ( match r1 with
-    | ','::r2 -> let ad,r3 = fromStringAux' r2 in
-             ( match r3 with
-         | '>'::r4 -> Noeud(ag,ad), r4
-         | _ -> failwith "Probleme dans la chaine"
-             )
-    | _ -> failwith "Probleme dans la chaine"
-        )
-  |  _ -> failwith "Probleme dans la chaine"
+        | '<'::r ->
+          let ag,r1 = fromStringAux' r in
+          (match r1 with
+            | ','::r2 -> let ad,r3 = fromStringAux' r2 in
+              (match r3 with
+                | '>'::r4 -> Noeud(ag,ad), r4
+                | _ -> failwith "Probleme dans la chaine"
+              )
+            | _ -> failwith "Probleme dans la chaine"
+          )
+        |  _ -> failwith "Probleme dans la chaine"
       and fromStringAux' = function
-  | '<'::_ as l -> fromStringAux l
-  | c::r when (c != ',') && (c != '<') && (c != '>') -> Feuille c, r
-  | _ -> failwith "Probleme dans la chaine"
+        | '<'::_ as l -> fromStringAux l
+        | c::r when (c != ',') && (c != '<') && (c != '>') -> Feuille c, r
+        | _ -> failwith "Probleme dans la chaine"
       in
-  a <- match (explode s) with
-       | [] -> Vide
-       | [c] -> Feuille c
-       | l ->  ( match fromStringAux l with
-       | a',[] -> a'
-       | _,_ -> failwith "Probleme dans la chaine"
-         ) *)
+      a <- match (explode s) with
+        | [] -> Vide
+        | [c] -> Feuille c
+        | l ->  ( match fromStringAux l with
+          | a',[] -> a'
+          | _,_ -> failwith "Probleme dans la chaine"
+        )
 
     (* method toList : char list *)
     method toList =
@@ -208,15 +208,14 @@ struct
       a <- rec_map f a
 
     (* method subs : (char * char) list -> unit *)
-   (*  method subs (l:(char * char) list) =
-      this#map (fun c -> try List.assoc c l with Not_found -> c) *)
+    method subs (l:(char * char) list) =
+      this#map (fun c -> try List.assoc c l with Not_found -> c)
 
     (* method coder : string -> bin list *)
-   (*  method coder (s:string) =
-      if a = Vide
-      then
-  this#creerArbre (listeFreq (explode s));
-      List.fold_left (fun res c -> res@(this#cheminFeuille c)) [] (explode s) *)
+    method coder (s:string) =
+      if a = Vide then
+      this#creerArbre (listeFreq (explode s));
+      List.fold_left (fun res c -> res@(this#cheminFeuille c)) [] (explode s)
 
 (******)
     (*method decoder : bin list -> string *)
@@ -345,13 +344,13 @@ struct
         if i' < 0 then l else fillHd Z i' l
 
     (* coderBin : int -> bin list -> char list * int *)
-(*     method coderBin (n:int) (l_bin:bin list) =
+    method coderBin (n:int) (l_bin:bin list) =
       match l_bin with
         | [] -> [],0
         | _ ->
     let l = nPartition n l_bin in
       List.map (fun l' -> char_of_int (this#toInt l')) l,
-      List.length (List.hd (List.rev l)) *)
+      List.length (List.hd (List.rev l))
 
     (* decoderBin : int -> char list * int -> bin list *)
     method decoderBin (n':int) ((l_c,n):char list * int) =
@@ -365,12 +364,12 @@ struct
       List.concat l'
 
     (* coderStr : string -> string *)
-(*     method coderStr (s:string) =
+    method coderStr (s:string) =
       let l_bin = this#coder s in
       let lc,n = this#coderBin nb l_bin in
       let sa = this#toStruct in
       let sa' = List.fold_left (fun acc c -> acc ^ (String.make 1 c)) "" (this#toList) in
-  (string_of_int n) ^ sa ^ sa' ^ (implode lc) *)
+  (string_of_int n) ^ sa ^ sa' ^ (implode lc)
 
 (******)
     (* decoderStr : string -> string *)

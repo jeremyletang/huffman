@@ -28,7 +28,7 @@ sig
 
     method get_arbre : arbre (* A SUPPRIMER *)
 
-    (* method fromString : string -> unit *)
+    method fromString : string -> unit
 
     method toList : char list
 
@@ -46,9 +46,9 @@ sig
 
     method map : (char -> char) -> unit
 
-    (* method subs : (char * char) list -> unit *)
+    method subs : (char * char) list -> unit
 
-    (* method coder : string -> bin list *)
+    method coder : string -> bin list
 
     (* method decoder : bin list -> string *)
 
@@ -69,11 +69,11 @@ sig
 
     method toBin : int -> int -> bin list
 
-    (* method coderBin : int -> bin list -> char list * int *)
+    method coderBin : int -> bin list -> char list * int
 
     method decoderBin : int -> char list * int -> bin list
 
-    (* method coderStr : string -> string *)
+    method coderStr : string -> string
 
     (* method decoderStr : string -> string *)
 
