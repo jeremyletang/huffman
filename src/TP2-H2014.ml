@@ -191,10 +191,21 @@ struct
     
     parcoursArbre a l_bin 0 
 
-(******)
     (* method map : (char -> char) -> unit *)
     (* La variable d'instance "a" est mis à jour en conséquence *)
-    (* method map (f:(char -> char)) = *)
+    method map (f:(char -> char)) =
+      let rec rec_map f arb = match arb with
+        Vide -> Vide
+        | Noeud(Feuille(c), next) ->
+          let tmp = rec_map f next in
+          Noeud(Feuille(f c), tmp)
+        | Noeud(next, Feuille(c)) ->
+          let tmp = rec_map f next in
+          Noeud(tmp, Feuille(f c))
+        | Feuille(c) -> Feuille(f c)
+        | _ -> Vide
+      in
+      a <- rec_map f a
 
     (* method subs : (char * char) list -> unit *)
    (*  method subs (l:(char * char) list) =

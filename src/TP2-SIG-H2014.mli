@@ -44,7 +44,7 @@ sig
     
     method extraireFeuille : bin list -> char                                                 
 
-    (* method map : (char -> char) -> unit *)                                                       
+    method map : (char -> char) -> unit
 
     (* method subs : (char * char) list -> unit *)
 
