@@ -40,6 +40,11 @@ struct
   class huffman ?str () = object(this)
 
     val mutable a = Vide
+    (* val mutable feuille_list = [] *)
+
+    method get_arbre = a
+
+    (* method get_list = feuille_list *)
 
     (* method estVide : bool *)
     method estVide = match a with
@@ -47,10 +52,28 @@ struct
       | _ -> false
 
 (******)
-     (* method creerArbre : (char * int) list -> unit *)
+    (* method creerArbre : (char * int) list -> unit *)
     (* La variable d'instance "a" est mis à jour en conséquence *)
     (* La méthode ne prend pas pour aquis que lf est triée *)
-    (* method creerArbre (lf:(char * int) list) = *)
+
+    method creerArbre (lf:(char * int) list) =
+      let less_than ((_, i1), (_, i2)) = i1 < i2 in
+      let rec rec_list_of_feuille lf l = match lf with
+        [] -> l
+        | (c, i)::tail -> rec_list_of_feuille tail (l@[(Feuille(c), i)])
+      in
+      let rec rec_build_arbre lf = match lf with
+        [] -> a <- Vide
+        | (arb, cnt)::tail ->
+          match tail with
+            [] -> a <- arb
+            | (arb_next, cnt_next)::tail2 ->
+              rec_build_arbre (tri less_than ([(Noeud(arb, arb_next), (cnt + cnt_next))]@tail2))
+      in
+      let lfeuille = rec_list_of_feuille lf [] in
+      match lfeuille with
+      | [(arb, _)] -> a <- arb
+      | _ -> rec_build_arbre (tri less_than lfeuille)
 
     (* method fromString : string -> unit *)
     (* method fromString (s:string) =
@@ -129,8 +152,7 @@ struct
     initializer
         match str with
         | None -> ()
-        | Some str -> print_string str
-        (* | Some str -> this#creerArbre (listeFreq (explode str)) *)
+        | Some str -> this#creerArbre (listeFreq (explode str))
   end
 
 
@@ -253,11 +275,11 @@ struct
 
 (******)
     (* decoderStr : string -> string *)
-    (* method decoderStr (s:string) = *)                                                            
+    (* method decoderStr (s:string) = *)
 
 (******)
     (* coderFichier : string -> string -> unit *)
-   (*  method coderFichier (inFile:string) (outFile:string) =                                       
+   (*  method coderFichier (inFile:string) (outFile:string) =
       let ratio s1 s2 =
   int_of_float ((1.0 -. ((float_of_int (String.length s1)) /.
       (float_of_int (String.length s2)))) *. 100.0)
@@ -265,9 +287,12 @@ struct
 
 (******)
     (*  decoderFichier : string -> string -> unit *)
-    (* method decoderFichier (inFile:string) (outFile:string) = *)                                  
+    (* method decoderFichier (inFile:string) (outFile:string) = *)
 
 
   end
 
 end;;
+
+open Huffman;;
+open Utiles;;

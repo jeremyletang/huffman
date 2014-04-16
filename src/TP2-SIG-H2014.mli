@@ -24,7 +24,11 @@ sig
   object
     val mutable a : arbre
 
-    (* method creerArbre : (char * int) list -> unit *)                                             
+    method creerArbre : (char * int) list -> unit
+
+    method get_arbre : arbre (* A SUPPRIMER *)
+
+    (* method get_list : (arbre * int) list (* A SUPPRIMER *) *)
 
     (* method fromString : string -> unit *)
 
