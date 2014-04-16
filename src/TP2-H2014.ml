@@ -104,16 +104,16 @@ struct
 
     (* method toList : char list *)
     method toList =
-      let rec rec_to_struct arb l = match arb with
+      let rec rec_to_list arb l = match arb with
         Vide -> l
         | Noeud(Feuille(c), next) ->
-          rec_to_struct next (l@[c])
+          rec_to_list next (l@[c])
         | Noeud(next, Feuille(c)) ->
-          (rec_to_struct next l)@[c]
+          (rec_to_list next l)@[c]
         | Feuille(c) -> l@[c]
         | _ -> l
       in
-      rec_to_struct a []
+      rec_to_list a []
 
     (* method toString : string *)
     method toString =
@@ -152,7 +152,6 @@ struct
       in
       rec_appartient c a
 
-(******)
     (* method cheminFeuille : char -> bin list *)
       method cheminFeuille (c:char) =
         let rec parcoursArbre arb l_bin  = match arb with
@@ -164,7 +163,6 @@ struct
       if this#estVide then begin print_string "L'arbre est vide"; [] end
       else parcoursArbre a []
 
-(******)
     (* method extraireFeuille : bin list -> char  *)
      method extraireFeuille (l_bin:bin list) =
      let rec parcoursArbre arb l_bin iter =
@@ -217,9 +215,22 @@ struct
       this#creerArbre (listeFreq (explode s));
       List.fold_left (fun res c -> res@(this#cheminFeuille c)) [] (explode s)
 
-(******)
     (*method decoder : bin list -> string *)
-    (* method decoder (l_bin:bin list) = *)
+    method decoder (l_bin:bin list) =
+      let rec rec_find_in_tree arb l_bin pos = match arb with
+        Feuille(c) -> (pos, c)
+        | Noeud(l, r) ->
+          if (List.nth l_bin pos) == U then rec_find_in_tree r l_bin (pos + 1)
+          else rec_find_in_tree l l_bin (pos + 1)
+        | _ -> (pos, 'c')
+      in
+      let rec rec_decoder l_bin str pos = match pos with
+        i when i == (List.length l_bin) -> str
+        | _ ->
+          let (new_pos, c) = rec_find_in_tree a l_bin pos in
+          rec_decoder l_bin (str ^ Char.escaped c) new_pos
+      in
+      rec_decoder l_bin "" 0
 
     (* afficherArbre : arbre -> string -> unit *)
     method afficherArbre (file:string) =
@@ -371,9 +382,8 @@ struct
       let sa' = List.fold_left (fun acc c -> acc ^ (String.make 1 c)) "" (this#toList) in
   (string_of_int n) ^ sa ^ sa' ^ (implode lc)
 
-(******)
     (* decoderStr : string -> string *)
-    (* method decoderStr (s:string) = *)
+    method decoderStr (s:string) =
 
 (******)
     (* coderFichier : string -> string -> unit *)

@@ -50,7 +50,7 @@ sig
 
     method coder : string -> bin list
 
-    (* method decoder : bin list -> string *)
+    method decoder : bin list -> string
 
     method afficherArbre : string -> unit
 
@@ -75,7 +75,7 @@ sig
 
     method coderStr : string -> string
 
-    (* method decoderStr : string -> string *)
+    method decoderStr : string -> string
 
     (* method coderFichier : string -> string -> unit *)
 

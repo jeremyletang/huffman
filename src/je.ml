@@ -23,7 +23,7 @@ open Utiles;;
 
 (* On exécute maintenant les fonctions une à une *)
 
-(* print_string "\n\nTest de la fonction nPartition\n";
+print_string "\n\nTest de la fonction nPartition\n";
 print_string "------------------------------\n\n";
 
 nPartition 1 [];;
@@ -32,7 +32,7 @@ nPartition 1 ['1';'2';'3';'4'];;
 nPartition 2 ['1';'2';'3';'4'];;
 nPartition 4 ['1';'2';'3';'4'];;
 nPartition 5 ['1';'2';'3';'4'];;
-nPartition 3 ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j";"k"];; *)
+nPartition 3 ["a";"b";"c";"d";"e";"f";"g";"h";"i";"j";"k"];;
 
 print_string "\nTest de la classe huffman\n";;
 print_string "-------------------------\n";;
