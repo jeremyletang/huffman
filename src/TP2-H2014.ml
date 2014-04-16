@@ -99,17 +99,45 @@ struct
        | a',[] -> a'
        | _,_ -> failwith "Probleme dans la chaine"
          ) *)
-(******)
+
     (* method toList : char list *)
-    (* method toList = *)
+    method toList =
+      let rec rec_to_struct arb l = match arb with
+        Vide -> l
+        | Noeud(Feuille(c), next) ->
+          rec_to_struct next (l@[c])
+        | Noeud(next, Feuille(c)) ->
+          (rec_to_struct next l)@[c]
+        | Feuille(c) -> l@[c]
+        | _ -> l
+      in
+      rec_to_struct a []
 
-(******)
     (* method toString : string *)
-    (* method toString = *)
+    method toString =
+      let rec rec_to_string arb str = match arb with
+        Vide -> str
+        | Noeud(Feuille(c), next) ->
+          (rec_to_string next (str ^ Char.escaped '<' ^ Char.escaped c ^ Char.escaped ',')) ^ Char.escaped '>'
+        | Noeud(next, Feuille(c)) ->
+          (rec_to_string next (str ^ Char.escaped '<')) ^ Char.escaped ',' ^ Char.escaped c ^ Char.escaped '>'
+        | Feuille(c) -> str ^ Char.escaped c
+        | _ -> str
+      in
+      rec_to_string a ""
 
-(******)
     (* method toStruct : string *)
-    (* method toStruct = *)
+    method toStruct =
+      let rec rec_to_struct arb str = match arb with
+        Vide -> str
+        | Noeud(Feuille(c), next) ->
+          (rec_to_struct next (str ^ Char.escaped '<' ^ Char.escaped ',')) ^ Char.escaped '>'
+        | Noeud(next, Feuille(c)) ->
+          (rec_to_struct next (str ^ Char.escaped '<')) ^ Char.escaped ',' ^ Char.escaped '>'
+        | Feuille(c) -> str
+        | _ -> str
+      in
+      rec_to_struct a ""
 
     (* method appartient : char -> bool *)
     method appartient (c:char) =

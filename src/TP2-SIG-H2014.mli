@@ -28,15 +28,13 @@ sig
 
     method get_arbre : arbre (* A SUPPRIMER *)
 
-    (* method get_list : (arbre * int) list (* A SUPPRIMER *) *)
-
     (* method fromString : string -> unit *)
 
-    (* method toList : char list *)                                                                 
+    method toList : char list
 
-    (* method toString : string *)                                                                  
+    method toString : string
 
-    (* method toStruct : string *)                                                                  
+    method toStruct : string
 
     method estVide : bool
 
@@ -44,7 +42,7 @@ sig
 
     (* method cheminFeuille : char -> bin list *)                                                   
 
-    (* method extraireFeuille : bin list -> char *)                                                 
+    (* method extraireFeuille : bin list -> char *)
 
     (* method map : (char -> char) -> unit *)                                                       
 
