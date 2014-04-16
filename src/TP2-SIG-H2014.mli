@@ -52,7 +52,7 @@ sig
 
     (* method decoder : bin list -> string *)                                                       
 
-    (* method afficherArbre : string -> unit *)                                                     
+    method afficherArbre : string -> unit
 
   end
 

@@ -31,6 +31,8 @@ struct
   open Sys
   open Utiles
 
+  exception Err of string
+
   (* Structure de données *)
   type arbre = Vide | Feuille of char | Noeud of arbre * arbre
   type bin = U | Z
@@ -178,9 +180,31 @@ struct
     (*method decoder : bin list -> string *)
     (* method decoder (l_bin:bin list) = *)
 
-(******)
-     (* afficherArbre : arbre -> string -> unit *)
-     (* method afficherArbre (file:string) = *)
+    (* afficherArbre : arbre -> string -> unit *)
+    method afficherArbre (file:string) =
+      let print_lvl_transit lvl fd = match lvl with
+        1 -> ()
+        | _ -> fprintf fd "nv%d -> nv%d\n" (lvl - 1) lvl
+      in
+      let rec rec_afficher_arbre arb lvl fd = match arb with
+        Vide -> close_out fd; raise (Err "L'arbre est vide")
+        | Noeud(Feuille(c), next) ->
+          fprintf fd "nv%d -> %c\n" lvl c;
+          print_lvl_transit lvl fd;
+          rec_afficher_arbre next (lvl + 1) fd
+        | Noeud(next, Feuille(c)) ->
+          print_lvl_transit lvl fd;
+          rec_afficher_arbre next (lvl + 1) fd;
+          fprintf fd "nv%d -> %c\n" lvl c;
+        | Feuille(c) -> fprintf fd "nv%d -> %c\n" (lvl - 1) c
+        | _ -> raise (Err "L'arbre possede erreurs")
+      in
+      let fd = open_out file in
+      fprintf fd "digraph G {\n";
+      rec_afficher_arbre a 1 fd;
+      fprintf fd "}\n";
+      close_out fd;
+      ignore(Sys.command (String.concat " " ["dotty";file]))
 
     initializer
         match str with
