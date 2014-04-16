@@ -77,9 +77,9 @@ sig
 
     method decoderStr : string -> string
 
-    (* method coderFichier : string -> string -> unit *)
+    method coderFichier : string -> string -> unit
 
-    (* method decoderFichier : string -> string -> unit *)
+    method decoderFichier : string -> string -> unit
 
   end
 

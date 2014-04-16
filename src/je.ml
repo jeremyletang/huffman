@@ -66,7 +66,7 @@ let b = new huffman ();;
 b#fromString "<a,<b,c>>";;
 b#toString;;
 
-(* print_string "\nTest de la classe zip\n";;
+print_string "\nTest de la classe zip\n";;
 print_string "----------------------\n\n";;
 
 let o = new zip ~str:s1 ();;
@@ -93,7 +93,7 @@ z#decoderFichier "test.zz" "testzip2.ml";;
 compFichier "testzip.ml" "testzip2.ml";;
 
 print_string "*************************   FIN TESTS   **************************\n";;
-print_string "******************************************************************\n\n";; *)
+print_string "******************************************************************\n\n";;
 
 (********************** RÉPONSES VALIDES ***************************
 
@@ -253,3 +253,37 @@ Ratio de compression: 34%
 - : unit = ()
 #
 *)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

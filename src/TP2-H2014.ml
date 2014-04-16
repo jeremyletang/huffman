@@ -409,18 +409,46 @@ struct
       let l_l_bin = List.map (fun i -> this#toBin 8 i) (List.map (fun i -> int_of_char i) code) in
       this#decoder (to_bin_list l_l_bin [] (8 - ext))
 
-(******)
     (* coderFichier : string -> string -> unit *)
-   (*  method coderFichier (inFile:string) (outFile:string) =
+    method coderFichier (inFile:string) (outFile:string) =
       let ratio s1 s2 =
-  int_of_float ((1.0 -. ((float_of_int (String.length s1)) /.
-      (float_of_int (String.length s2)))) *. 100.0)
-      in ... *)
+        int_of_float ((1.0 -. ((float_of_int (String.length s1)) /.
+        (float_of_int (String.length s2)))) *. 100.0)
+      in
+      let load_file f =
+        let ic = open_in f in
+        let n = in_channel_length ic in
+        let s = String.create n in
+        really_input ic s 0 n;
+        close_in ic;
+        s
+      in
+      let write_file file str =
+        let fd = open_out file in
+        fprintf fd "%s" str;
+        close_out fd;
+      in
+      let s = load_file inFile in
+      this#creerArbre (listeFreq (explode s));
+      write_file outFile (this#coderStr s)
 
-(******)
     (*  decoderFichier : string -> string -> unit *)
-    (* method decoderFichier (inFile:string) (outFile:string) = *)
-
+    method decoderFichier (inFile:string) (outFile:string) =
+      let load_file f =
+        let ic = open_in f in
+        let n = in_channel_length ic in
+        let s = String.create n in
+        really_input ic s 0 n;
+        close_in ic;
+        s
+      in
+      let write_file file str =
+        let fd = open_out file in
+        fprintf fd "%s" str;
+        close_out fd;
+      in
+      let s = load_file inFile in
+      write_file outFile (this#decoderStr s)
 
   end
 
