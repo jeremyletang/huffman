@@ -40,9 +40,9 @@ sig
 
     method appartient : char -> bool
 
-    (* method cheminFeuille : char -> bin list *)                                                   
-
-    (* method extraireFeuille : bin list -> char *)
+    method cheminFeuille : char -> bin list
+    
+    method extraireFeuille : bin list -> char                                                 
 
     (* method map : (char -> char) -> unit *)                                                       
 
