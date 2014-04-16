@@ -40,7 +40,7 @@ sig
 
     method estVide : bool
 
-    (* method appartient : char -> bool *)                                                          
+    method appartient : char -> bool
 
     (* method cheminFeuille : char -> bin list *)                                                   
 

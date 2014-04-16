@@ -51,11 +51,9 @@ struct
       | Vide -> true
       | _ -> false
 
-(******)
     (* method creerArbre : (char * int) list -> unit *)
     (* La variable d'instance "a" est mis à jour en conséquence *)
     (* La méthode ne prend pas pour aquis que lf est triée *)
-
     method creerArbre (lf:(char * int) list) =
       let less_than ((_, i1), (_, i2)) = i1 < i2 in
       let rec rec_list_of_feuille lf l = match lf with
@@ -113,9 +111,16 @@ struct
     (* method toStruct : string *)
     (* method toStruct = *)
 
-(******)
     (* method appartient : char -> bool *)
-    (* method appartient (c:char) = *)
+    method appartient (c:char) =
+      let rec rec_appartient c arb = match arb with
+        Vide -> false
+        | Noeud(Feuille(cur_c), next) -> if cur_c == c then true else rec_appartient c next
+        | Noeud(next, Feuille(cur_c)) -> if cur_c == c then true else rec_appartient c next
+        | Feuille(cur_c) -> if cur_c == c then true else false
+        | _ -> false
+      in
+      rec_appartient c a
 
 (******)
     (* method cheminFeuille : char -> bin list *)
