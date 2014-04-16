@@ -384,6 +384,30 @@ struct
 
     (* decoderStr : string -> string *)
     method decoderStr (s:string) =
+      let rec pop_elem_list l nb = match nb with
+        0 -> l
+        | _ -> pop_elem_list (List.tl l) (nb - 1)
+      in
+      let rec replace_char arb c_list = match arb with
+        Vide -> Vide
+        | Feuille(old_c) -> Feuille(List.nth c_list ((int_of_char old_c) - 1))
+        | Noeud(Feuille(old_c), next) ->
+          let tmp = replace_char next c_list in
+          Noeud(Feuille(List.nth c_list ((int_of_char old_c) - 1)), tmp)
+        | Noeud(next, Feuille(old_c)) ->
+          let tmp = replace_char next c_list in
+          Noeud(tmp, Feuille(List.nth c_list ((int_of_char old_c) - 1)))
+        | _ -> Vide
+      in
+      let rec to_bin_list l l_bin ext = match l with
+        [] -> l_bin
+        | [e] -> l_bin@(pop_elem_list e ext)
+        | e::tail -> to_bin_list tail (l_bin@e) ext
+      in
+      let (ext, c_list, code) = this#extraireInfos (explode s) in
+      a <- replace_char a c_list;
+      let l_l_bin = List.map (fun i -> this#toBin 8 i) (List.map (fun i -> int_of_char i) code) in
+      this#decoder (to_bin_list l_l_bin [] (8 - ext))
 
 (******)
     (* coderFichier : string -> string -> unit *)
