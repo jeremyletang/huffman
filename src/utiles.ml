@@ -97,24 +97,22 @@ struct
   (* nPartition : int -> 'a list -> 'a list list *)
   (* retourne une listes contenant des listes de n éléments. Seule la *)
   (* dernière liste de cette liste peut faire exception à cette règle.*)
+  let rec nPartition (n:int) (l:'a list) =
 
-(******)
-    let rec nPartition (n:int) (l:'a list) = 
+    let rec boucle i m (l: 'a list) =
+      match i with
+      | k when k > 0 ->
+       (match m with
+        [l1;l2]-> boucle (k-1) ([l1@[List.hd l]]@[l2]) (List.tl l)
+        | _ -> boucle i [[];[]] l)
+      | k when k == 0 ->
+        (match m with
+        | [l1;l2] -> boucle (k-1) [l1;l2 @ l] (List.tl l)
+        |  _ -> boucle i [[];[]] l)
+      | _ -> m
 
-      let rec boucle i m (l: 'a list) = 
-        match i with
-        | k when k > 0 -> 
-         (match m with 
-          [l1;l2]-> boucle (k-1) ([l1@[List.hd l]]@[l2]) (List.tl l)
-          | _ -> boucle i [[];[]] l)
-        | k when k == 0 -> 
-          (match m with 
-          | [l1;l2] -> boucle (k-1) [l1;l2 @ l] (List.tl l) 
-          |  _ -> boucle i [[];[]] l)                      
-        | _ -> m
-      
-      in
-       boucle n [[];[]] l
+    in
+     boucle n [[];[]] l
 
 
 end;;
