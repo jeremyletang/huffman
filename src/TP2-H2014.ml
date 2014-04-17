@@ -111,7 +111,9 @@ struct
         | Noeud(next, Feuille(c)) ->
           (rec_to_list next l)@[c]
         | Feuille(c) -> l@[c]
-        | _ -> l
+        | Noeud(next_l, next_r) ->
+          let n = rec_to_list next_l l in
+          rec_to_list next_r n
       in
       rec_to_list a []
 
@@ -124,7 +126,10 @@ struct
         | Noeud(next, Feuille(c)) ->
           (rec_to_string next (str ^ Char.escaped '<')) ^ Char.escaped ',' ^ Char.escaped c ^ Char.escaped '>'
         | Feuille(c) -> str ^ Char.escaped c
-        | _ -> str
+        | Noeud(next_l, next_r) ->
+          let n_l = rec_to_string next_l (str ^ Char.escaped '<') in
+          let n_r = rec_to_string next_r (n_l ^ Char.escaped ',') in
+          n_r ^ Char.escaped '>'
       in
       rec_to_string a ""
 
@@ -137,7 +142,10 @@ struct
         | Noeud(next, Feuille(c)) ->
           (rec_to_struct next (str ^ Char.escaped '<')) ^ Char.escaped ',' ^ Char.escaped '>'
         | Feuille(c) -> str
-        | _ -> str
+        | Noeud(next_l, next_r) ->
+          let n_l = rec_to_struct next_l (str ^ Char.escaped '<') in
+          let n_r = rec_to_struct next_r (n_l ^ Char.escaped ',') in
+          n_r ^ Char.escaped '>'
       in
       rec_to_struct a ""
 
@@ -148,7 +156,8 @@ struct
         | Noeud(Feuille(cur_c), next) -> if cur_c == c then true else rec_appartient c next
         | Noeud(next, Feuille(cur_c)) -> if cur_c == c then true else rec_appartient c next
         | Feuille(cur_c) -> if cur_c == c then true else false
-        | _ -> false
+        | Noeud(next_l, next_r) ->
+          if (rec_appartient c next_l) == true then true else rec_appartient c next_r
       in
       rec_appartient c a
 
@@ -157,11 +166,26 @@ struct
         let rec parcoursArbre arb l_bin  = match arb with
         Noeud(Feuille(f),n) ->if f == c then l_bin@[Z] else parcoursArbre n (l_bin@[U])
         | Noeud(n,Feuille(f)) ->if f == c then l_bin@[U] else parcoursArbre n (l_bin@[Z])
+        | Feuille(f) -> if f == c then l_bin else []
+        | Noeud(next_l, next_r) ->
+          (match parcoursArbre next_l (l_bin@[Z]) with
+            [] -> parcoursArbre next_r (l_bin@[U])
+            | some -> some)
+        | Vide -> l_bin
+      in
+      if this#estVide then begin print_string "L'arbre est vide"; [] end
+      else parcoursArbre a []
+
+     (*   method cheminFeuille (c:char) =
+        let rec parcoursArbre arb l_bin  = match arb with
+        Noeud(Feuille(f),n) ->if f == c then l_bin@[Z] else parcoursArbre n (l_bin@[U])
+        | Noeud(n,Feuille(f)) ->if f == c then l_bin@[U] else parcoursArbre n (l_bin@[Z])
         | Feuille(f) -> if f == c then l_bin else begin print_string "Caractere introuvable dans l'arbre"; [] end
         |  _ -> l_bin
       in
       if this#estVide then begin print_string "L'arbre est vide"; [] end
-      else parcoursArbre a []
+      else parcoursArbre a [] *)
+
 
     (* method extraireFeuille : bin list -> char  *)
      method extraireFeuille (l_bin:bin list) =
@@ -201,7 +225,10 @@ struct
           let tmp = rec_map f next in
           Noeud(tmp, Feuille(f c))
         | Feuille(c) -> Feuille(f c)
-        | _ -> Vide
+        | Noeud(next_l, next_r) ->
+          let n_l = rec_map f next_l in
+          let n_r = rec_map f next_r in
+          Noeud(n_l, n_r)
       in
       a <- rec_map f a
 
@@ -222,7 +249,7 @@ struct
         | Noeud(l, r) ->
           if (List.nth l_bin pos) == U then rec_find_in_tree r l_bin (pos + 1)
           else rec_find_in_tree l l_bin (pos + 1)
-        | _ -> (pos, 'c')
+        | Vide -> (pos, ' ')
       in
       let rec rec_decoder l_bin str pos = match pos with
         i when i == (List.length l_bin) -> str
@@ -234,26 +261,36 @@ struct
 
     (* afficherArbre : arbre -> string -> unit *)
     method afficherArbre (file:string) =
-      let print_lvl_transit lvl fd = match lvl with
-        1 -> ()
-        | _ -> fprintf fd "nv%d -> nv%d\n" (lvl - 1) lvl
+      let print_lvl_transit fd from_lvl to_lvl =
+        fprintf fd "%s -> %s\n" from_lvl to_lvl
+      in
+      let print_normal_line fd lvl c = match c with
+        ' ' -> fprintf fd "%s -> %s\n" lvl "ESPACE";
+        | _ -> fprintf fd "%s -> %c\n" lvl c;
       in
       let rec rec_afficher_arbre arb lvl fd = match arb with
         Vide -> close_out fd; raise (Err "L'arbre est vide")
+        | Noeud(Feuille(l), Feuille(r)) ->
+          print_normal_line fd lvl l;
+          print_normal_line fd lvl r;
         | Noeud(Feuille(c), next) ->
-          fprintf fd "nv%d -> %c\n" lvl c;
-          print_lvl_transit lvl fd;
-          rec_afficher_arbre next (lvl + 1) fd
+          print_normal_line fd lvl c;
+          print_lvl_transit fd lvl (lvl ^ Char.escaped 'U');
+          rec_afficher_arbre next (lvl ^ Char.escaped 'U') fd
         | Noeud(next, Feuille(c)) ->
-          print_lvl_transit lvl fd;
-          rec_afficher_arbre next (lvl + 1) fd;
-          fprintf fd "nv%d -> %c\n" lvl c;
-        | Feuille(c) -> fprintf fd "nv%d -> %c\n" (lvl - 1) c
-        | _ -> raise (Err "L'arbre possede erreurs")
+          print_lvl_transit fd lvl (lvl ^ Char.escaped 'Z');
+          rec_afficher_arbre next (lvl ^ Char.escaped 'Z') fd;
+          print_normal_line fd lvl c;
+        | Feuille(c) -> print_normal_line fd (String.sub lvl 0 ((String.length lvl) - 1)) c
+        | Noeud(next_l, next_r) ->
+          fprintf fd "%s -> %s\n" lvl (lvl ^ Char.escaped 'Z');
+          fprintf fd "%s -> %s\n" lvl (lvl ^ Char.escaped 'U');
+          rec_afficher_arbre next_l (lvl ^ Char.escaped 'Z') fd;
+          rec_afficher_arbre next_r (lvl ^ Char.escaped 'U') fd;
       in
       let fd = open_out file in
       fprintf fd "digraph G {\n";
-      rec_afficher_arbre a 1 fd;
+      rec_afficher_arbre a "nv0" fd;
       fprintf fd "}\n";
       close_out fd;
       ignore(Sys.command (String.concat " " ["dotty";file]))
@@ -397,7 +434,10 @@ struct
         | Noeud(next, Feuille(old_c)) ->
           let tmp = replace_char next c_list in
           Noeud(tmp, Feuille(List.nth c_list ((int_of_char old_c) - 1)))
-        | _ -> Vide
+        | Noeud(next_l, next_r) ->
+          let n_l = replace_char next_l c_list in
+          let n_r = replace_char next_r c_list in
+          Noeud(n_l, n_r)
       in
       let rec to_bin_list l l_bin ext = match l with
         [] -> l_bin
