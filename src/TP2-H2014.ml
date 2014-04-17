@@ -18,6 +18,7 @@
 (* Charger la signature HUFFMAN *)
 #use "utiles.ml";;
 #use "TP2-SIG-H2014.mli";;
+#load "str.cma" ;;
 
 (*******************************************************************)
 (* Implantation du compresseur de données                          *)
@@ -29,6 +30,7 @@ struct
   open List
   open Printf
   open Sys
+  open Str
   open Utiles;;
 
   exception Err of string
@@ -175,17 +177,6 @@ struct
       in
       if this#estVide then begin print_string "L'arbre est vide"; [] end
       else parcoursArbre a []
-
-     (*   method cheminFeuille (c:char) =
-        let rec parcoursArbre arb l_bin  = match arb with
-        Noeud(Feuille(f),n) ->if f == c then l_bin@[Z] else parcoursArbre n (l_bin@[U])
-        | Noeud(n,Feuille(f)) ->if f == c then l_bin@[U] else parcoursArbre n (l_bin@[Z])
-        | Feuille(f) -> if f == c then l_bin else begin print_string "Caractere introuvable dans l'arbre"; [] end
-        |  _ -> l_bin
-      in
-      if this#estVide then begin print_string "L'arbre est vide"; [] end
-      else parcoursArbre a [] *)
-
 
     (* method extraireFeuille : bin list -> char  *)
      method extraireFeuille (l_bin:bin list) =
@@ -465,7 +456,8 @@ struct
       in
       let write_file file str =
         let fd = open_out file in
-        fprintf fd "%s" str;
+        (* fprintf fd "%s" str; *)
+        output_string fd str;
         close_out fd;
       in
       let s = load_file inFile in
@@ -475,7 +467,7 @@ struct
     (*  decoderFichier : string -> string -> unit *)
     method decoderFichier (inFile:string) (outFile:string) =
       let load_file f =
-        let ic = open_in f in
+        let ic = open_in_bin f in
         let n = in_channel_length ic in
         let s = String.create n in
         really_input ic s 0 n;
@@ -484,7 +476,7 @@ struct
       in
       let write_file file str =
         let fd = open_out file in
-        fprintf fd "%s" str;
+        fprintf fd "%s" (Str.global_replace (Str.regexp ("\r\n")) "\n" str);
         close_out fd;
       in
       let s = load_file inFile in
