@@ -173,30 +173,30 @@ struct
             | some -> some)
         | Vide -> l_bin
       in
-      if this#estVide then begin print_string "L'arbre est vide"; [] end
+      if this#estVide then failwith "L'arbre est vide"
       else parcoursArbre a []
 
     (* method extraireFeuille : bin list -> char  *)
      method extraireFeuille (l_bin:bin list) =
      let rec parcoursArbre arb l_bin iter =
-        if iter > (List.length l_bin) - 1 then begin print_string "Chemin binaire mauvais"; ' ' end
+        if iter > (List.length l_bin) - 1 then failwith "Chemin binaire mauvais"
         else
          match (List.nth l_bin iter) with
           Z -> (match arb with Noeud(Feuille(f), Feuille(f2)) ->
                   if iter == (List.length l_bin - 1) then f
-                  else begin print_string "Feuille introuvable dans l'arbre"; ' ' end
+                  else failwith "Feuille introuvable dans l'arbre"
                 |Noeud(Feuille(f), n) ->
                   if iter == (List.length l_bin - 1) then f
-                  else begin print_string "Feuille introuvable dans l'arbre"; ' ' end
-                |Noeud(n, Feuille(f)) -> parcoursArbre n l_bin (iter + 1)
+                  else failwith "Feuille introuvable dans l'arbre"
+                |Noeud(n, n2) -> parcoursArbre n l_bin (iter + 1)
                 | _ -> ' ')
           | U -> (match arb with Noeud(Feuille(f), Feuille(f2)) ->
                     if iter == (List.length l_bin - 1) then f2
-                    else  begin print_string "Feuille introuvable dans l'arbre"; ' ' end
-                  | Noeud(Feuille(f), n) -> parcoursArbre n l_bin (iter + 1)
+                    else  failwith "Feuille introuvable dans l'arbre"
                   | Noeud( n, Feuille(f)) ->
                       if iter == (List.length l_bin - 1) then f
-                      else begin print_string "Feuille introuvable dans l'arbre"; ' ' end
+                      else failwith "Feuille introuvable dans l'arbre"
+                  | Noeud(n1, n) -> parcoursArbre n l_bin (iter + 1)
                   |_ -> ' ' )
      in
 
@@ -445,13 +445,17 @@ struct
         (float_of_int (String.length s2)))) *. 100.0)
       in
       let load_file f =
-        let ic = open_in f in
-        let n = in_channel_length ic in
-        let s = String.create n in
-        really_input ic s 0 n;
-        close_in ic;
-        s
-      in
+  let ic = open_in f in
+  let n = in_channel_length ic in
+  let s = String.create n in
+  try
+  really_input ic s 0 n;
+  close_in ic;
+  s
+  with
+  e -> close_in ic;
+  s
+  in
       let write_file file str =
         let fd = open_out file in
         (* fprintf fd "%s" str; *)
