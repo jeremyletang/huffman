@@ -18,7 +18,6 @@
 (* Charger la signature HUFFMAN *)
 #use "utiles.ml";;
 #use "TP2-SIG-H2014.mli";;
-#load "str.cma" ;;
 
 (*******************************************************************)
 (* Implantation du compresseur de données                          *)
@@ -30,7 +29,6 @@ struct
   open List
   open Printf
   open Sys
-  open Str
   open Utiles;;
 
   exception Err of string
@@ -478,7 +476,7 @@ struct
       in
       let write_file file str =
         let fd = open_out file in
-        fprintf fd "%s" (Str.global_replace (Str.regexp ("\r\n")) "\n" str);
+        fprintf fd "%s" str;
         close_out fd;
       in
       let s = load_file inFile in
