@@ -445,17 +445,17 @@ struct
         (float_of_int (String.length s2)))) *. 100.0)
       in
       let load_file f =
-  let ic = open_in f in
-  let n = in_channel_length ic in
-  let s = String.create n in
-  try
-  really_input ic s 0 n;
-  close_in ic;
-  s
-  with
-  e -> close_in ic;
-  s
-  in
+        let ic = open_in f in
+        let n = in_channel_length ic in
+        let s = String.create n in
+        try
+          really_input ic s 0 n;
+          close_in ic;
+          s
+        with
+          e -> close_in ic;
+          s
+      in
       let write_file file str =
         let fd = open_out file in
         (* fprintf fd "%s" str; *)
