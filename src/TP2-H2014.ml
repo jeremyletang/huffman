@@ -118,10 +118,10 @@ struct
       let rec rec_to_string arb str = match arb with
         Vide -> str
         | Noeud(Feuille(c), next) ->
-          (rec_to_string next (str ^ Char.escaped '<' ^ Char.escaped c ^ Char.escaped ',')) ^ Char.escaped '>'
+          (rec_to_string next (str ^ (String.make 1 '<') ^ (String.make 1 c) ^ (String.make 1 ','))) ^ (String.make 1 '>')
         | Noeud(next, Feuille(c)) ->
-          (rec_to_string next (str ^ Char.escaped '<')) ^ Char.escaped ',' ^ Char.escaped c ^ Char.escaped '>'
-        | Feuille(c) -> str ^ Char.escaped c
+          (rec_to_string next (str ^ Char.escaped '<')) ^ Char.escaped ',' ^ (String.make 1 c) ^ Char.escaped '>'
+        | Feuille(c) -> str ^ (String.make 1 c)
         | Noeud(next_l, next_r) ->
           let n_l = rec_to_string next_l (str ^ Char.escaped '<') in
           let n_r = rec_to_string next_r (n_l ^ Char.escaped ',') in
