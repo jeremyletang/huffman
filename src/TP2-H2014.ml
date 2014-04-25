@@ -240,7 +240,7 @@ struct
         i when i == (List.length l_bin) -> str
         | _ ->
           let (new_pos, c) = rec_find_in_tree a l_bin pos in
-          rec_decoder l_bin (str ^ Char.escaped c) new_pos
+          rec_decoder l_bin (str ^ (String.make 1 c)) new_pos
       in
       rec_decoder l_bin "" 0
 
