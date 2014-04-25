@@ -460,7 +460,7 @@ struct
       let s = load_file inFile in
       this#creerArbre (listeFreq (explode s));
       let encode_s = (this#coderStr s) in
-      printf "Ratio de compression: %d\n" (ratio encode_s s);
+      printf "Ratio de compression: %d%s\n" (ratio encode_s s) "%";
       write_file outFile encode_s
 
     (*  decoderFichier : string -> string -> unit *)
