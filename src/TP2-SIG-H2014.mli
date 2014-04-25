@@ -26,8 +26,6 @@ sig
 
     method creerArbre : (char * int) list -> unit
 
-    method get_arbre : arbre (* A SUPPRIMER *)
-
     method fromString : string -> unit
 
     method toList : char list

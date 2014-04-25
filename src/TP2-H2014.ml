@@ -31,8 +31,6 @@ struct
   open Sys
   open Utiles;;
 
-  exception Err of string
-
   (* Structure de données *)
   type arbre = Vide | Feuille of char | Noeud of arbre * arbre
   type bin = U | Z
@@ -43,8 +41,6 @@ struct
 
     val mutable a = Vide
     (* val mutable feuille_list = [] *)
-
-    method get_arbre = a
 
     (* method get_list = feuille_list *)
 
@@ -162,19 +158,19 @@ struct
       rec_appartient c a
 
     (* method cheminFeuille : char -> bin list *)
-      method cheminFeuille (c:char) =
-        let rec parcoursArbre arb l_bin  = match arb with
-        Noeud(Feuille(f),n) ->if f == c then l_bin@[Z] else parcoursArbre n (l_bin@[U])
-        | Noeud(n,Feuille(f)) ->if f == c then l_bin@[U] else parcoursArbre n (l_bin@[Z])
-        | Feuille(f) -> if f == c then l_bin else []
-        | Noeud(next_l, next_r) ->
-          (match parcoursArbre next_l (l_bin@[Z]) with
-            [] -> parcoursArbre next_r (l_bin@[U])
-            | some -> some)
-        | Vide -> l_bin
-      in
-      if this#estVide then failwith "L'arbre est vide"
-      else parcoursArbre a []
+    method cheminFeuille (c:char) =
+      let rec parcoursArbre arb l_bin  = match arb with
+      Noeud(Feuille(f),n) ->if f == c then l_bin@[Z] else parcoursArbre n (l_bin@[U])
+      | Noeud(n,Feuille(f)) ->if f == c then l_bin@[U] else parcoursArbre n (l_bin@[Z])
+      | Feuille(f) -> if f == c then l_bin else []
+      | Noeud(next_l, next_r) ->
+        (match parcoursArbre next_l (l_bin@[Z]) with
+          [] -> parcoursArbre next_r (l_bin@[U])
+          | some -> some)
+      | Vide -> l_bin
+    in
+    if this#estVide then failwith "L'arbre est vide"
+    else parcoursArbre a []
 
     (* method extraireFeuille : bin list -> char  *)
      method extraireFeuille (l_bin:bin list) =
@@ -449,7 +445,7 @@ struct
         let n = in_channel_length ic in
         let s = String.create n in
         try
-          really_input ic s 0 n;
+          input ic s 0 n;
           close_in ic;
           s
         with
@@ -471,16 +467,17 @@ struct
     (*  decoderFichier : string -> string -> unit *)
     method decoderFichier (inFile:string) (outFile:string) =
       let load_file f =
-        let ic = open_in_bin f in
+        let ic = open_in f in
         let n = in_channel_length ic in
         let s = String.create n in
-        really_input ic s 0 n;
+        input ic s 0 n;
         close_in ic;
         s
       in
       let write_file file str =
         let fd = open_out file in
-        fprintf fd "%s" str;
+        (* fprintf fd "%s" str; *)
+        output_string fd str;
         close_out fd;
       in
       let s = load_file inFile in
@@ -489,6 +486,3 @@ struct
   end
 
 end;;
-
-open Huffman;;
-open Utiles;;
