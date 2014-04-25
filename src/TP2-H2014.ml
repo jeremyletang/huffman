@@ -254,7 +254,7 @@ struct
         | _ -> fprintf fd "%s -> %c\n" lvl c;
       in
       let rec rec_afficher_arbre arb lvl fd = match arb with
-        Vide -> close_out fd; raise (Err "L'arbre est vide")
+        Vide -> close_out fd; failwith "L'arbre est vide"
         | Noeud(Feuille(l), Feuille(r)) ->
           print_normal_line fd lvl l;
           print_normal_line fd lvl r;
@@ -445,7 +445,7 @@ struct
         let n = in_channel_length ic in
         let s = String.create n in
         try
-          input ic s 0 n;
+          ignore(input ic s 0 n);
           close_in ic;
           s
         with
@@ -454,7 +454,6 @@ struct
       in
       let write_file file str =
         let fd = open_out file in
-        (* fprintf fd "%s" str; *)
         output_string fd str;
         close_out fd;
       in
@@ -470,13 +469,12 @@ struct
         let ic = open_in f in
         let n = in_channel_length ic in
         let s = String.create n in
-        input ic s 0 n;
+        ignore(input ic s 0 n);
         close_in ic;
         s
       in
       let write_file file str =
         let fd = open_out file in
-        (* fprintf fd "%s" str; *)
         output_string fd str;
         close_out fd;
       in
